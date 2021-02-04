@@ -24,7 +24,7 @@ stages:
   displayName: Build and push stage
   jobs:  
   - job: Build
-    displayName: 'Build ${{variables.imageRepository}}:${{variables.tag}}'
+    displayName: 'Build v${{variables.Build.BuildId}}'
 
     steps:
     - script: dotnet publish --configuration $(buildConfiguration)
