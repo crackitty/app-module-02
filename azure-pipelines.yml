@@ -5,11 +5,6 @@
 trigger:
 - master
 
-pool:
-  name: 'charlie-mac-agent-pool'
-  demands:
-  - Agent.OS -equals Darwin
-
 variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'ea3e2007-5e2b-4876-866c-4b8bb1fdd35c'
@@ -19,9 +14,6 @@ variables:
   tag: 'v$(Build.BuildId)'
   buildConfiguration: 'Release'
   
-  # Agent VM image name
-  vmImageName: 'ubuntu-latest'
-
 stages:
 - stage: Build
   displayName: Build and push stage
@@ -29,7 +21,9 @@ stages:
   - job: Build
     displayName: Build
     pool:
-      vmImage: $(vmImageName)
+      name: 'charlie-mac-agent-pool'
+      demands:
+      - Agent.OS -equals Darwin
     steps:
     - script: dotnet publish --configuration $(buildConfiguration)
       displayName: 'dotnet publish $(buildConfiguration)'
