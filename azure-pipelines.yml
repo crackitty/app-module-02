@@ -27,7 +27,7 @@ stages:
   - job: Build
     variables:
     - name: tagName
-      value: v$(Build.BuildId)
+      value: 'v$(Build.BuildId)'
     displayName: 'Build ${{ variables.tagName }}'
 
     steps:
