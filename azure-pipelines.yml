@@ -6,7 +6,7 @@ trigger:
 - master
 
 pool:
-  name: 'charlie-mac'
+  name: 'charlie-mac-agent-pool'
   demands:
   - Agent.OS -equals Darwin
 
