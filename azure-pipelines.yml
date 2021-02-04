@@ -24,11 +24,11 @@ stages:
   displayName: Build and push stage
   jobs:  
   - job: Build
-    displayName: 'Build $(imageRepository):$(tag)'
+    displayName: 'Build ${{imageRepository}}:${{tag}}'
 
     steps:
     - script: dotnet publish --configuration $(buildConfiguration)
-      displayName: 'dotnet publish $(buildConfiguration)'
+      displayName: 'dotnet publish ${{buildConfiguration}}'
     - task: Docker@2
       displayName: Docker build and push
       inputs:
