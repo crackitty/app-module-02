@@ -24,7 +24,7 @@ stages:
   displayName: Build and push stage
   jobs:  
   - job: Build
-    displayName: 'Build v${{Build.BuildId}}'
+    displayName: 'Build ${{ variables.tag }}'
 
     steps:
     - script: dotnet publish --configuration $(buildConfiguration)
