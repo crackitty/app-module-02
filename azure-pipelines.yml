@@ -19,12 +19,16 @@ variables:
   tag: 'v$(Build.BuildId)'
   buildConfiguration: 'Release'
   
+  
 stages:
 - stage: Build
   displayName: Build and push stage
   jobs:  
   - job: Build
-    displayName: 'Build ${{ variables.tag }}'
+    variables:
+    - name: tagName
+      value: v$(Build.BuildId)
+    displayName: 'Build ${{ variables.tagName }}'
 
     steps:
     - script: dotnet publish --configuration $(buildConfiguration)
