@@ -17,7 +17,7 @@ variables:
   containerRegistry: 'smgregistry.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: 'v$(Build.BuildId)'
-  buildNumber: '$(System.DefinitionId)'
+  buildNumber: $(System.DefinitionId)
   buildConfiguration: 'Release'
   
   
@@ -26,7 +26,7 @@ stages:
   displayName: Build and push stage
   jobs:  
   - job: Build
-    displayName: 'Build $(System.DefinitionId)'
+    displayName: 'Build ${{variables.buildNumber}}'
 
     steps:
     - script: dotnet publish --configuration $(buildConfiguration)
