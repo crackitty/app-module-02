@@ -5,6 +5,11 @@
 trigger:
 - master
 
+pool:
+  name: 'charlie-mac'
+  demands:
+  - Agent.OS -equals Darwin
+
 resources:
 - repo: self
 
