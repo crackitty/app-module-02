@@ -23,11 +23,9 @@ variables:
 stages:
 - stage: Build
   displayName: Build and push stage
-  variables:
-    bn: $(Build.BuildNumber)
   jobs:  
   - job: Build
-    displayName: 'Build ${{ variables.bn }}'
+    displayName: 'Compile, build and push'
 
     steps:
     - script: dotnet publish --configuration $(buildConfiguration)
