@@ -18,8 +18,8 @@ stages:
 - stage: Build
   displayName: Build and push stage
   jobs:  
-  - job: Build
-    displayName: Build
+  - job: BuildAndPushImage
+    displayName: Build and push image
     pool:
       name: 'charlie-mac-agent-pool'
       demands:
