@@ -20,26 +20,35 @@ variables:
   buildConfiguration: 'Release'
   bn: $(Build.BuildId)
   
-steps:
-- script: dotnet publish --configuration $(buildConfiguration)
-  displayName: 'dotnet publish ${{variables.buildConfiguration}}'
+stages:
+  - stage: Build
+    jobs:
+    - job: Build
+      displayName: Build
+      steps:
+      - script: dotnet publish --configuration $(buildConfiguration)
+        displayName: 'dotnet publish ${{variables.buildConfiguration}}'
+      - task: Docker@2
+        displayName: Docker build
+        inputs:
+          command: build
+          repository: $(imageRepository)
+          dockerfile: $(dockerfilePath)
+          containerRegistry: $(dockerRegistryServiceConnection)
+          tags: |
+            $(tag)
 
-- task: Docker@2
-  displayName: Docker build
-  inputs:
-    command: build
-    repository: $(imageRepository)
-    dockerfile: $(dockerfilePath)
-    containerRegistry: $(dockerRegistryServiceConnection)
-    tags: |
-      $(tag)
-
-- task: Docker@2
-  displayName: Docker push
-  inputs:
-    command: push
-    repository: $(imageRepository)
-    dockerfile: $(dockerfilePath)
-    containerRegistry: $(dockerRegistryServiceConnection)
-    tags: |
-      $(tag)
+  - stage: Deploy
+    jobs:
+    - job: Deploy
+      displayName: Build
+      steps:
+      - task: Docker@2
+        displayName: Docker push
+        inputs:
+          command: push
+          repository: $(imageRepository)
+          dockerfile: $(dockerfilePath)
+          containerRegistry: $(dockerRegistryServiceConnection)
+          tags: |
+            $(tag)
