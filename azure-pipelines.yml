@@ -38,11 +38,30 @@ stages:
           tags: |
             $(tag)
 
-  - stage: Deploy
+  - stage: Test
     jobs:
       - deployment: 
-        displayName: Deploy
+        displayName: 'Deploy To Test'
         environment: 'Test'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - task: Docker@2
+                displayName: Docker push
+                inputs:
+                  command: push
+                  repository: $(imageRepository)
+                  dockerfile: $(dockerfilePath)
+                  containerRegistry: $(dockerRegistryServiceConnection)
+                  tags: |
+                    $(tag)
+
+  - stage: QA
+    jobs:
+      - deployment: 
+        displayName: 'Deploy To QA'
+        environment: 'QA'
         strategy:
           runOnce:
             deploy:
