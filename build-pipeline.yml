@@ -1,0 +1,34 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  name: 'charlie-mac-agent-pool'
+  demands:
+  - Agent.OS -equals Darwin
+
+variables:
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: 'ea3e2007-5e2b-4876-866c-4b8bb1fdd35c'
+  imageRepository: 'app-module-02'
+  containerRegistry: 'smgregistry.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  tag: 'v$(Build.BuildId)'
+  buildConfiguration: 'Release'
+
+steps:
+- script: dotnet publish --configuration $(buildConfiguration)
+  displayName: 'dotnet publish'
+- task: Docker@2
+  displayName: 'Docker build'
+  inputs:
+    command: build
+    repository: $(imageRepository)
+    dockerfile: $(dockerfilePath)
+    containerRegistry: $(dockerRegistryServiceConnection)
+    tags: |
+      $(tag)
